@@ -1,0 +1,9 @@
+Phonon Calculation for Aluminium BCC
+ &inputph
+	prefix = 'aluminium.bcc',
+	ldisp = .true.,
+	nq1 = 12,
+	nq2 = 12,
+	nq3 = 12,
+	fildyn = 'aluminium.bcc.dyn',
+/
