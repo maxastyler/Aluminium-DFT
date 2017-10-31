@@ -2,11 +2,11 @@
 	calculation = 'scf',
 	tstress = .true.,
 	tprnfor = .true.,
-	prefix = 'aluminium',
+	prefix = 'aluminium.bcc',
 /
 &system
-	ibrav = 2,
-	celldm(1) = 7.6456,
+	ibrav = 3,
+	celldm(1) = 6.124,
 	nat = 1,
 	ntyp = 1,
 	ecutwfc = 30,
