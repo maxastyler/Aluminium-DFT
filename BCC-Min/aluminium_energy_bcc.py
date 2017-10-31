@@ -2,7 +2,7 @@ from subprocess import run, PIPE
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
-LATTICE_ENERGIES = True
+LATTICE_ENERGIES = False
 ECUT_PARAMS = True
 
 def create_string(ecutwfc, lattice_parameter):
@@ -39,7 +39,7 @@ ecut_params = np.linspace(10, 20, 30)
 if LATTICE_ENERGIES:
     lat_energies = [get_energy(i, 30) for i in lat_params]
     np.save("lattice_energies_bcc", lat_energies)
-#lat_energies = np.load("lattice_energies_bcc.npy")
+lat_energies = np.load("lattice_energies_bcc.npy")
 #ecut_energies = [get_energy(7.655, i) for i in ecut_params]
 #ecut_energy_differences=[ecut_energies[i]-ecut_energies[i-1] for i in range(1, len(ecut_params))]
 fitted_values=curve_fit(lambda x, a, b, c: a*(x-b)**2+c, lat_params, lat_energies)
@@ -51,4 +51,4 @@ plt.title("Energy (Ry) vs Lattice Parameter (A?) for Si")
 plt.plot(lat_params, lat_energies)
 #plt.plot(ecut_params, ecut_energies)
 #plt.plot(ecut_params[1:], ecut_energy_differences)
-#plt.show()
+plt.show()
