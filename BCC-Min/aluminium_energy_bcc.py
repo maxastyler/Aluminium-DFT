@@ -2,11 +2,12 @@ from subprocess import run, PIPE
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
+LATTICE_ENERGIES = True
+ECUT_PARAMS = True
 
 def create_string(ecutwfc, lattice_parameter):
     return "&control\n\
     	calculation = 'scf',\n\
-    	outdir='/home/max/quantum_espresso/qe-6.1/tempdir/',\n\
     /\n\
     &system\n\
     	ibrav = 3,\n\
@@ -26,7 +27,7 @@ def create_string(ecutwfc, lattice_parameter):
     ATOMIC_POSITIONS\n\
      Al 0.00 0.00 0.00\n\
     K_POINTS automatic\n\
-     5 5 5   1 1 1".format(lattice_parameter, ecutwfc)
+     12 12 12   1 1 1".format(lattice_parameter, ecutwfc)
 def get_energy(lattice_param, ecutwfc):
     p=run(['pw.x'], stdout=PIPE, input=create_string(ecutwfc, lattice_param), encoding='ascii')
     print(ecutwfc)
@@ -35,9 +36,10 @@ def get_energy(lattice_param, ecutwfc):
             return float(line.split()[-2])
 lat_params = np.linspace(6, 6.3, 40)
 ecut_params = np.linspace(10, 20, 30)
-#lat_energies = [get_energy(i, 13) for i in lat_params]
-#np.save("lattice_energies_bcc", lat_energies)
-lat_energies = np.load("lattice_energies_bcc.npy")
+if LATTICE_ENERGIES:
+    lat_energies = [get_energy(i, 30) for i in lat_params]
+    np.save("lattice_energies_bcc", lat_energies)
+#lat_energies = np.load("lattice_energies_bcc.npy")
 #ecut_energies = [get_energy(7.655, i) for i in ecut_params]
 #ecut_energy_differences=[ecut_energies[i]-ecut_energies[i-1] for i in range(1, len(ecut_params))]
 fitted_values=curve_fit(lambda x, a, b, c: a*(x-b)**2+c, lat_params, lat_energies)
